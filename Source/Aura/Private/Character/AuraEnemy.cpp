@@ -49,3 +49,11 @@ void AAuraEnemy::UnHighlightActor()
 	// 무기에 대한 커스텀 깊이 렌더링 비활성화
 	Weapon->SetRenderCustomDepth(false);
 }
+
+void AAuraEnemy::BeginPlay()
+{
+	Super::BeginPlay();
+	
+	AbilitySystemComponent->InitAbilityActorInfo(this,this);
+	
+}

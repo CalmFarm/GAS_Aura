@@ -15,6 +15,8 @@ UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetCont
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
 		// 새로 생성된 위젯 컨트롤러에 매개변수 설정
 		OverlayWidgetController->SetWidgetControllerParams(WCParams);
+		// OverlayWidgetController의 종속성에 콜백 함수를 바인딩
+		OverlayWidgetController->BindCallbacksToDependencies();
 
 		// 생성 및 설정된 위젯 컨트롤러 반환
 		return OverlayWidgetController;
@@ -45,7 +47,7 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 	// 오버레이 위젯에 위젯 컨트롤러 설정
 	OverlayWidget->SetWidgetController(WidgetController);
 
-	WidgetController->BroadcastInitailValues();
+	WidgetController->BroadcastInitialValues();
 	
 	// 위젯을 뷰포트에 추가하여 화면에 표시
 	Widget->AddToViewport();

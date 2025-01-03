@@ -44,7 +44,9 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 	// 오버레이 위젯에 위젯 컨트롤러 설정
 	OverlayWidget->SetWidgetController(WidgetController);
-    
+
+	WidgetController->BroadcastInitailValues();
+	
 	// 위젯을 뷰포트에 추가하여 화면에 표시
 	Widget->AddToViewport();
 }

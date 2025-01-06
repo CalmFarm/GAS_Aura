@@ -39,7 +39,7 @@ protected:
 	void ApplyEffectToTarget(AActor* TargetActor, TSubclassOf<UGameplayEffect> GameplayEffectClass);
 
 	UFUNCTION(BlueprintCallable)
-	void OnOnverlap(AActor* TargetActor);
+	void OnOnOverlap(AActor* TargetActor);
 
 	UFUNCTION(BlueprintCallable)
 	void OnEndOverlap(AActor* TargetActor);

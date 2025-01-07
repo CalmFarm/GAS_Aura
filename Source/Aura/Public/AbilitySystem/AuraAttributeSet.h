@@ -13,6 +13,32 @@
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties(){}
+
+	FGameplayEffectContextHandle EffectContextHandle;
+
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+	UPROPERTY()
+	AController* SourceController = nullptr;
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+	UPROPERTY()
+	AController* TargetController = nullptr;
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+};
 /**
  * 
  */
@@ -30,6 +56,8 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
+	
 	// Health 속성을 복제합니다.
 	// ReplicatedUsing 매크로는 Health 속성이 변경될 때 OnRep_Health 함수를 호출하도록 설정합니다.
 	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_Health, Category= "Vital Attributes")
@@ -62,7 +90,12 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+
+private:
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	
 };
+
+
 
 

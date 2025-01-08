@@ -32,7 +32,7 @@ public:
 	
 protected:
 	// 능력 시스템 컴포넌트를 저장하는 포인터
-	UPROPERTY()
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
 
 	// 속성 집합을 저장하는 포인터

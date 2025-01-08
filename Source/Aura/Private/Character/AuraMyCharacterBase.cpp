@@ -30,3 +30,7 @@ void AAuraMyCharacterBase::BeginPlay()
 	
 }
 
+void AAuraMyCharacterBase::InitAbilityActorInfo()
+{
+}
+

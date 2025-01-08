@@ -4,6 +4,7 @@
 #include "Character/AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Player/AuraPlayerController.h"
 #include "Player/AuraPlayerState.h"
@@ -49,7 +50,9 @@ void AAuraCharacter::InitAbilityActorInfo()
 	// 이 메서드는 해당 플레이어 상태와 현재 액터(캐릭터)를 연결하여,
 	// 능력 시스템의 정보를 설정합니다.
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
-
+	
+	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
+	
 	// 현재 캐릭터의 Ability System Component를 저장합니다.
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 

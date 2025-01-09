@@ -19,6 +19,7 @@ class AURA_API AAuraPlayerState : public APlayerState, public IAbilitySystemInte
 
 public:
 	AAuraPlayerState();
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
 	// 능력 시스템 컴포넌트를 반환하는 가상 메서드
 	// IAbilitySystemInterface에서 정의된 메서드를 재정의합니다.
@@ -29,6 +30,8 @@ public:
 	// PlayerState에서 캐릭터의 속성 집합에 접근하는 데 사용됩니다.
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
+	FORCEINLINE	int32 GetPlayerLevel() const {return Level;}
+
 	
 protected:
 	// 능력 시스템 컴포넌트를 저장하는 포인터
@@ -38,5 +41,11 @@ protected:
 	// 속성 집합을 저장하는 포인터
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> AttributeSet;
-	
+
+private:
+	UPROPERTY(visibleAnywhere, ReplicatedUsing=OnRep_Level)
+	int32 Level = 1;
+
+	UFUNCTION()
+	void OnRep_Level(int32 OldLevel);
 };

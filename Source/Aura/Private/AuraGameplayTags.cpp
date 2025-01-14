@@ -69,6 +69,11 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		FString("Amount of Mana regen every 1 sec")
 		);
 
+	GameplayTags.Attributes_Secondary_ManaRegeneration = UGameplayTagsManager::Get().AddNativeGameplayTag(
+		FName("Attributes.Secondary.ManaRegeneration"),
+		FString("Amount of Mana regen every 1 sec")
+		);
+
 	GameplayTags.Attributes_Secondary_MaxHealth = UGameplayTagsManager::Get().AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxHealth"),
 		FString("Maximum amount of health obtainable")

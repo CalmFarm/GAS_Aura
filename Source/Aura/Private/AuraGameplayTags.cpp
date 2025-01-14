@@ -45,7 +45,7 @@ void FAuraGameplayTags::InitializeNativeGameplayTags()
 		);
 
 	GameplayTags.Attributes_Secondary_BlockChance = UGameplayTagsManager::Get().AddNativeGameplayTag(
-		FName("Attributes.Secondary.Armor"),
+		FName("Attributes.Secondary.BlockChance"),
 		FString("Chance to cut incoming damage in half")
 		);
 

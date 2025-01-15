@@ -29,14 +29,14 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 
 	// 서버를 위한 능력 액터 정보 초기화
 	InitAbilityActorInfo();
-	
+	AddCharacterAbilities();
 }
 
 void AAuraCharacter::OnRep_PlayerState()
 {
 	Super::OnRep_PlayerState();
 
-	// Init ability actor info for teh Client
+	// Init ability actor info for the Client
 	InitAbilityActorInfo();
 }
 

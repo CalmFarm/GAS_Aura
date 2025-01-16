@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class UAuraAbilitySystemComponent;
 class UAuraConfigInput;
 class UInputMappingContext;
 class UInputAction;
@@ -28,6 +29,7 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	
 private:
 	UPROPERTY(EditAnywhere, category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
@@ -47,8 +49,12 @@ private:
 	void AbilityInputTagReleased(FGameplayTag InputTag);
 	void AbilityInputTagHeld(FGameplayTag InputTag);
 	
-
 	UPROPERTY(EditDefaultsOnly, category = "Input")
 	TObjectPtr<UAuraConfigInput> ConfigInput;
+
+	UPROPERTY()
+	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
+
+	UAuraAbilitySystemComponent* GetASC();
 };
 

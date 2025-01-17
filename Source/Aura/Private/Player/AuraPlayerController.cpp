@@ -47,8 +47,7 @@ void AAuraPlayerController::AutoRun()
 
 void AAuraPlayerController::CursorTrace()
 {
-	// 충돌 결과를 저장할 FHitResult 변수 선언
-	FHitResult CursorHit;
+	
 	// 현재 마우스 커서 아래의 충돌 정보를 가져옴
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	// 커서 아래에 유효한 충돌이 없으면 함수 종료
@@ -58,43 +57,11 @@ void AAuraPlayerController::CursorTrace()
 	LastActor = ThisActor;
 	// 현재 커서 아래의 액터를 ThisActor에 저장
 	ThisActor = CursorHit.GetActor();
-
-	// LastActor가 nullptr인지 확인
-	if (LastActor == nullptr)
+	
+	if (LastActor != ThisActor)
 	{
-		// ThisActor가 nullptr이 아닐 경우
-		if (ThisActor != nullptr)
-		{
-			// 현재 액터를 하이라이트
-			ThisActor->HighlightActor();
-		}
-		else
-		{
-			// ThisActor가 nullptr일 경우 (아무 동작 없음)
-		}
-	}
-	else
-	{
-		// LastActor가 nullptr이 아닐 경우
-		if (ThisActor == nullptr)
-		{
-			// 현재 액터가 없으면 LastActor의 하이라이트 해제
-			LastActor->UnHighlightActor();
-		}
-		else
-		{
-			// LastActor와 ThisActor가 다를 경우
-			if (LastActor != ThisActor)
-			{
-				// 이전 액터의 하이라이트 해제 및 현재 액터 하이라이트
-				LastActor->UnHighlightActor();
-				ThisActor->HighlightActor();
-			}
-			else
-			{
-				// LastActor와 ThisActor가 같을 경우 (아무 동작 없음)
-			}
-		}
+		if (LastActor) LastActor->UnHighlightActor();
+		if (ThisActor) ThisActor->HighlightActor();
 	}
 
 }
@@ -113,23 +80,17 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
 	if (bTargeting)
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
-		APawn* ControlledPawn = GetPawn();
+		const APawn* ControlledPawn = GetPawn();
 		if (FollowTime <= ShortPressThreshold && ControlledPawn)
 		{
 			if (UNavigationPath* NavPath = UNavigationSystemV1::FindPathToLocationSynchronously(this, ControlledPawn->GetActorLocation(), CachedDestination))
@@ -138,7 +99,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				for (const FVector& PointLoc : NavPath->PathPoints)
 				{
 					Spline->AddSplinePoint(PointLoc, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLoc, 8.f, 8, FColor::Yellow, false, 5.f);
 				}
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
 				bAutoRunning = true;
@@ -153,29 +113,19 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
 	if (!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 
 	if (bTargeting)
 	{
-		if (GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if (GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
 		FollowTime += GetWorld()->GetDeltaSeconds();
-
-		FHitResult Hit;
-		if (GetHitResultUnderCursor(ECC_Visibility, false, Hit))
-		{
-			CachedDestination = Hit.ImpactPoint;
-		}
+		
+		if (CursorHit.bBlockingHit) CachedDestination = CursorHit.ImpactPoint;
 
 		if (APawn* ControlledPawn = GetPawn())
 		{
@@ -201,8 +151,7 @@ void AAuraPlayerController::BeginPlay()
 	Super::BeginPlay();
 	check(AuraContext);
 
-	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
-	if (Subsystem)
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
 		Subsystem->AddMappingContext(AuraContext, 0);
 	}

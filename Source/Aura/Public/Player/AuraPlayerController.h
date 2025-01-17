@@ -41,7 +41,7 @@ private:
 	void Move(const FInputActionValue& InputActionValue);
 
 	void CursorTrace();
-
+	FHitResult CursorHit;
 	// IEnemyInterface를 구현한 액터에 대한 스크립트 인터페이스 변수 선언
 	TScriptInterface<IEnemyInterface> LastActor; // 이전에 선택된 적 액터
 	TScriptInterface<IEnemyInterface> ThisActor; // 현재 커서 아래의 적 액터

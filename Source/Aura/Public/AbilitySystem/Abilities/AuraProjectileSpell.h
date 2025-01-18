@@ -19,7 +19,7 @@ protected:
 	virtual void ActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayAbilityActivationInfo ActivationInfo, const FGameplayEventData* TriggerEventData) override;
 
 	UFUNCTION(BlueprintCallable)
-	void SpawnProjectile();
+	void SpawnProjectile(const FVector& ProjectileTargetLocation);
 	
 	UPROPERTY(EditAnywhere, blueprintReadWrite)
 	TSubclassOf<AAuraProjectile> ProjectileClass;

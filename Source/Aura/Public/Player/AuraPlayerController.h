@@ -38,8 +38,15 @@ private:
 	UPROPERTY(EditAnywhere, category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 
+	UPROPERTY(EditAnywhere, category = "Input")
+	TObjectPtr<UInputAction> ShiftAction;
+
 	void Move(const FInputActionValue& InputActionValue);
 
+	void ShiftPressed() { bShiftKeyDown = true; };
+	void ShiftReleased() { bShiftKeyDown = false; };
+	bool bShiftKeyDown = false;
+	
 	void CursorTrace();
 	FHitResult CursorHit;
 	// IEnemyInterface를 구현한 액터에 대한 스크립트 인터페이스 변수 선언

@@ -3,27 +3,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayEffect.h"
 #include "Engine/DataAsset.h"
 #include "CharacterClassInfo.generated.h"
 
-UENUM(blueprintType)
+class UGameplayEffect;
+
+UENUM(BlueprintType)
 enum class ECharacterClass : uint8
 {
 	Elementalist,
 	Warrior,
-	Ranger,
+	Ranger
 };
-
-USTRUCT(blueprintType)
-struct FCharacterDefaultClassInfo
+USTRUCT(BlueprintType)
+struct FCharacterClassDefaultInfo
 {
 	GENERATED_BODY()
-
-	UPROPERTY(EditDefaultsOnly, Category="Class Defaults")
+	UPROPERTY(EditDefaultsOnly, Category = "Class Defaults")
 	TSubclassOf<UGameplayEffect> PrimaryAttributes;
 };
-
 /**
  * 
  */
@@ -32,15 +30,11 @@ class AURA_API UCharacterClassInfo : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-
-	UPROPERTY(EditDefaultsOnly, Category="Common Class Defaults")
-	TMap<ECharacterClass, FCharacterDefaultClassInfo> CharacterClassInformation;
-	
-	UPROPERTY(EditDefaultsOnly, Category="Common Class Defaults")
+	UPROPERTY(EditDefaultsOnly, Category = "Character Class Defaults")
+	TMap<ECharacterClass, FCharacterClassDefaultInfo> CharacterClassInformation;
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
 	TSubclassOf<UGameplayEffect> SecondaryAttributes;
-
-	UPROPERTY(EditDefaultsOnly, Category="Common Class Defaults")
+	UPROPERTY(EditDefaultsOnly, Category = "Common Class Defaults")
 	TSubclassOf<UGameplayEffect> VitalAttributes;
-
-	FCharacterDefaultClassInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
+	FCharacterClassDefaultInfo GetClassDefaultInfo(ECharacterClass CharacterClass);
 };

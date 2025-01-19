@@ -27,7 +27,6 @@ struct FUIWidgetRow : public FTableRowBase
 class UAuraUserWidget;
 // Health가 변경될 때 호출되는 델리게이트의 시그니처를 정의
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
-
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 /**

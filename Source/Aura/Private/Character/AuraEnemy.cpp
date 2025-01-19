@@ -6,13 +6,12 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
+#include "Components/WidgetComponent.h"
+#include "Widgets/AuraUserWidget.h"
 
 AAuraEnemy::AAuraEnemy()
 {
-	// 적의 메쉬가 Visibility 채널에 대해 충돌 응답을 블록으로 설정
 	GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
-
-	// AbilitySystemComponent를 UAuraAbilitySystemComponent 타입으로 기본 서브 오브젝트로 생성
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	
 	// AbilitySystemComponent의 복제 여부를 설정 (네트워크에서 복제 가능)
@@ -22,10 +21,11 @@ AAuraEnemy::AAuraEnemy()
 	// Minimal 모드는 필요한 최소한의 데이터만 클라이언트에 전송하여,
 	// 네트워크 대역폭을 절약합니다.
 	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-
-	// AttributeSet을 UAuraAttributeSet 타입으로 기본 서브 오브젝트로 생성
+	
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 
+	HealthBar = CreateDefaultSubobject<UWidgetComponent>("HealthBar");
+	HealthBar->SetupAttachment(GetRootComponent());
 }
 
 void AAuraEnemy::HighlightActor()
@@ -59,6 +59,31 @@ void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 	InitAbilityActorInfo();
+
+	if (UAuraUserWidget* AuraUserWidget =Cast<UAuraUserWidget>(HealthBar->GetUserWidgetObject()))
+	{
+		AuraUserWidget->SetWidgetController(this);
+	}
+	
+	if (const UAuraAttributeSet* AuraAS = Cast<UAuraAttributeSet>(AttributeSet))
+	{
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(AuraAS->GetHealthAttribute()).AddLambda(
+			[this](const FOnAttributeChangeData& Data)
+			{
+				OnHealthChanged.Broadcast(Data.NewValue);
+			}
+		);
+
+		OnHealthChanged.Broadcast(AuraAS->GetHealth());
+		OnMaxHealthChanged.Broadcast(AuraAS->GetMaxHealth());
+	}
+	
 }
 
 void AAuraEnemy::InitAbilityActorInfo()

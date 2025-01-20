@@ -35,6 +35,11 @@ UAbilitySystemComponent* AAuraMyCharacterBase::GetAbilitySystemComponent() const
 }
 
 
+UAnimMontage* AAuraMyCharacterBase::GetHitReactMontage_Implementation()
+{
+	return HitReactMontage;
+}
+
 void AAuraMyCharacterBase::BeginPlay()
 {
 	Super::BeginPlay();

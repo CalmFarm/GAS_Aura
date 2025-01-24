@@ -59,6 +59,7 @@ void AAuraMyCharacterBase::MulticastHandleDeath_Implementation()
 	
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	Dissolve();
+	bDead = true;
 }
 
 void AAuraMyCharacterBase::BeginPlay()
@@ -71,6 +72,16 @@ FVector AAuraMyCharacterBase::GetCombatSocketLocation_Implementation()
 {
 	check(Weapon);
 	return Weapon->GetSocketLocation(WeaponTipSocketName);
+}
+
+bool AAuraMyCharacterBase::IsDead_Implementation() const
+{
+	return bDead;
+}
+
+AActor* AAuraMyCharacterBase::GetAvatar_Implementation()
+{
+	return this;
 }
 
 void AAuraMyCharacterBase::InitAbilityActorInfo()

@@ -84,6 +84,11 @@ AActor* AAuraMyCharacterBase::GetAvatar_Implementation()
 	return this;
 }
 
+TArray<FTaggedMontage> AAuraMyCharacterBase::GetAttackMontages_Implementation()
+{
+	return AttackMontage;
+}
+
 void AAuraMyCharacterBase::InitAbilityActorInfo()
 {
 }
